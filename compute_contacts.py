@@ -9,6 +9,8 @@ import numpy as np
 import pandas as pd
 from cStringIO import StringIO
 import commands
+from time import sleep
+import pymol
 
 def loadPdb(filename):
 	pdb_parser = PDBParser()
@@ -51,6 +53,26 @@ def color_pdb(DSSPdf, pdb_file, treshold):
 	core_res = DSSPdf.loc[DSSPdf.acc <= treshold]
 
 	logging.info(core_res.head())
+	
+	# launch pymol
+	pymol.finish_launching()
+
+	# reinitialize
+	pymol.cmd.reinitialize()
+	# Desired pymol commands here to produce and save figures
+	pymol.cmd.load(pdb_file)
+	# set to cartoon
+
+	# color structure in gray
+
+	# color core residues in blue
+
+	# Desired pymol commands here to produce and save figures
+	pymol.cmd.save(pdb_file + ".png")
+	# let pymol process 
+	sleep(0.5) # (in seconds)
+
+
 if __name__ == '__main__': 
 	parser =  argparse.ArgumentParser(
 		description = 'this is a program that annotates and describes physical properties of a protein structure.')
@@ -74,23 +96,31 @@ if __name__ == '__main__':
 	warnings.filterwarnings('ignore')
 
 	if args.debug:
+		
 		logging.basicConfig(level = logging.INFO)	
 
-	dssp_output =  runDSSP(args.single_input)
 	
-	DSSPdf = parseDSSP(dssp_output)
+	if args.dssp:
+		
+		dssp_output =  runDSSP(args.single_input)
+		
+		DSSPdf = parseDSSP(dssp_output)
 
-	logging.info(DSSPdf.head())
+		logging.info(DSSPdf.head())
 
-	logging.info('colnames: ', str(list(DSSPdf)))	
+		logging.info('colnames: ', str(list(DSSPdf)))	
+
+		DSSPdf.to_csv(args.outfile, sep = "\t")
 
 	if args.color_structures:
+
+		DSSPdf = pd.read_csv("1ek0A.core_res.out", sep = "\t")
 
 		pdb_file = args.single_input
 		
 		color_pdb(DSSPdf, pdb_file, args.treshold)
 
-	DSSPdf.to_csv(args.outfile, sep = "\t")
+	
 
 
 
