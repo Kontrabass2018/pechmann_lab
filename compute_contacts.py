@@ -35,7 +35,7 @@ def parseDSSP(DSSPresult):
 	DSSPresult = DSSPresult[header_start:].split("\n")[1:]
 
 	for line in DSSPresult:
-		id, res, aa, acc = line[4:6], line[9:11], line[14:15], line[35:38]
+		id, res, aa, acc = int(line[4:6]), int(line[9:11]), line[14:15], int(line[35:38])
 		ids.append(id)
 		res_num.append(res)
 		amino_acids.append(aa)
