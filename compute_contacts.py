@@ -31,7 +31,10 @@ def parseDSSP(DSSPresult):
 	amino_acids = []
 	accessibility = []
 
-	for line in DSSPresult[header_start:].split("\n"):
+	# split lines into list and remove header line
+	DSSPresult = DSSPresult[header_start:].split("\n")[1:]
+
+	for line in DSSPresult:
 		id, res, aa, acc = line[4:6], line[9:11], line[14:15], line[35:38]
 		ids.append(id)
 		res_num.append(res)
@@ -81,7 +84,7 @@ if __name__ == '__main__':
 
 	logging.info('colnames: ', str(list(parsedDSSP)))	
 
-	if color_structures:
+	if args.color_structures:
 
 		pdb_file = args.single_input
 		
