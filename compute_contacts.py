@@ -46,7 +46,7 @@ def parseDSSP(DSSPresult):
 
 	return DSSPdf
 
-def color_pdb(DSSPdf, pdb_file):
+def color_pdb(DSSPdf, pdb_file, treshold):
 
 	core_res = df.loc[DSSPdf.acc <= treshold]
 
