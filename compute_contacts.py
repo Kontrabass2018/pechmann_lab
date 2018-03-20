@@ -78,19 +78,19 @@ if __name__ == '__main__':
 
 	dssp_output =  runDSSP(args.single_input)
 	
-	parsedDSSP = parseDSSP(dssp_output)
+	DSSPdf = parseDSSP(dssp_output)
 
-	logging.info(parsedDSSP.head())
+	logging.info(DSSPdf.head())
 
-	logging.info('colnames: ', str(list(parsedDSSP)))	
+	logging.info('colnames: ', str(list(DSSPdf)))	
 
 	if args.color_structures:
 
 		pdb_file = args.single_input
 		
-		color_pdb(parseDSSP, pdb_file, args.treshold)
+		color_pdb(DSSPdf, pdb_file, args.treshold)
 
-	parsedDSSP.to_csv(args.outfile, sep = "\t")
+	DSSPdf.to_csv(args.outfile, sep = "\t")
 
 
 
